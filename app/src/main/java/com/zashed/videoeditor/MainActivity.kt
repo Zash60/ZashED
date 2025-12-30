@@ -15,11 +15,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
-import androidx.media3.effect.Contrast
-import androidx.media3.effect.RgbFilter
+import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
-import androidx.media3.transformer.Composition
-import androidx.media3.transformer.Effects
 import androidx.media3.transformer.ExportResult
 import androidx.media3.transformer.Transformer
 import com.zashed.videoeditor.databinding.ActivityMainBinding
@@ -172,7 +169,16 @@ class MainActivity : AppCompatActivity() {
 
         Toast.makeText(this, "Cortando vídeo...", Toast.LENGTH_SHORT).show()
 
-        val inputMediaItem = MediaItem.fromUri(selectedVideoUri!!)
+        val inputMediaItem = MediaItem.Builder()
+            .setUri(selectedVideoUri!!)
+            .setClippingConfiguration(
+                androidx.media3.common.MediaItem.ClippingConfiguration.Builder()
+                    .setStartPositionMs(startTime)
+                    .setEndPositionMs(endTime)
+                    .build()
+            )
+            .build()
+
         val outputFile = File(getExternalFilesDir(null), "trimmed_video_${System.currentTimeMillis()}.mp4")
 
         val transformer = Transformer.Builder(this)
@@ -204,52 +210,7 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        val filters = arrayOf("Sepia", " Preto e Branco", "Contraste Alto", "Sem Filtro")
-
-        AlertDialog.Builder(this)
-            .setTitle("Escolha um filtro")
-            .setItems(filters) { _, which ->
-                applySelectedFilter(which)
-            }
-            .setNegativeButton("Cancelar", null)
-            .show()
-    }
-
-    private fun applySelectedFilter(filterIndex: Int) {
-        Toast.makeText(this, "Aplicando filtro...", Toast.LENGTH_SHORT).show()
-
-        val inputMediaItem = MediaItem.fromUri(selectedVideoUri!!)
-        val outputFile = File(getExternalFilesDir(null), "filtered_video_${System.currentTimeMillis()}.mp4")
-
-        val effects = when (filterIndex) {
-            0 -> Effects(listOf(), listOf(RgbFilter.createSepiaFilter()))
-            1 -> Effects(listOf(), listOf(RgbFilter.createGrayscaleFilter()))
-            2 -> Effects(listOf(), listOf(Contrast(2.0f)))
-            else -> Effects(listOf(), listOf())
-        }
-
-        val transformer = Transformer.Builder(this)
-            .setVideoMimeType("video/mp4")
-            .setEffects(effects)
-            .build()
-
-        transformer.startTransformation(inputMediaItem, outputFile.absolutePath)
-
-        transformer.addListener(object : Transformer.Listener {
-            override fun onCompleted(composition: Composition, result: ExportResult) {
-                runOnUiThread {
-                    Toast.makeText(this@MainActivity, "Filtro aplicado com sucesso!", Toast.LENGTH_SHORT).show()
-                    selectedVideoUri = Uri.fromFile(outputFile)
-                    initializePlayer(selectedVideoUri!!)
-                }
-            }
-
-            override fun onError(composition: Composition, result: ExportResult, exception: Exception) {
-                runOnUiThread {
-                    Toast.makeText(this@MainActivity, "Erro ao aplicar filtro: ${exception.message}", Toast.LENGTH_SHORT).show()
-                }
-            }
-        })
+        Toast.makeText(this, "Filtros avançados serão implementados em breve", Toast.LENGTH_LONG).show()
     }
 
     private fun saveVideo() {
