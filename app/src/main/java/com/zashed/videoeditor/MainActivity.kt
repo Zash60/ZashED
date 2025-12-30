@@ -15,8 +15,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
-import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.transformer.Composition
 import androidx.media3.transformer.ExportResult
 import androidx.media3.transformer.Transformer
 import com.zashed.videoeditor.databinding.ActivityMainBinding
@@ -193,12 +193,6 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this@MainActivity, "Vídeo cortado com sucesso!", Toast.LENGTH_SHORT).show()
                     selectedVideoUri = Uri.fromFile(outputFile)
                     initializePlayer(selectedVideoUri!!)
-                }
-            }
-
-            override fun onError(composition: androidx.media3.transformer.Composition, result: ExportResult, exception: Exception) {
-                runOnUiThread {
-                    Toast.makeText(this@MainActivity, "Erro ao cortar vídeo: ${exception.message}", Toast.LENGTH_SHORT).show()
                 }
             }
         })
