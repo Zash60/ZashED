@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Video Editor</string>
+    <string name="select_video">Selecionar Vídeo</string>
+    <string name="trim_video">Cortar Vídeo</string>
+    <string name="apply_filter">Aplicar Filtro</string>
+    <string name="save_video">Salvar Vídeo</string>
+    <string name="play">Reproduzir</string>
+    <string name="pause">Pausar</string>
+    <string name="no_video_selected">Nenhum vídeo selecionado</string>
+    <string name="video_saved">Vídeo salvo com sucesso!</string>
+    <string name="error_saving_video">Erro ao salvar vídeo</string>
+    <string name="permission_denied">Permissão negada</string>
+</resources>
